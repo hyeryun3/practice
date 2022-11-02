@@ -1,0 +1,20 @@
+doctype html 
+html  
+    head 
+        meta(charset='utf8')
+        title PRACTICE HOME 
+    body
+        form(action="/formOk" method='post') 
+            input(type="text" name='title')
+            input(type="text" name='contents')
+            input(type='submit')
+        //- a(href='/one')
+            button(type='button') 버튼1
+        table
+            -for (var i=0; i<book.length; i++)
+                tr
+                    th= i+1
+                    td #{book[i].title}
+                    td #{book[i].contents}
+            
+            //- span 제목은 #{book.title} 내용은 #{book.contents}
