@@ -3,18 +3,21 @@ html
     head 
         meta(charset='utf8')
         title PRACTICE HOME 
+        link(rel='stylesheet' href='/lib/style.css')
     body
         form(action="/formOk" method='post') 
             input(type="text" name='title')
             input(type="text" name='contents')
-            input(type='submit')
+            input(type='submit' value='등록')
         //- a(href='/one')
             button(type='button') 버튼1
         table
-            -for (var i=0; i<book.length; i++)
+            -for (var i=startNo-1; i<endNo; i++)
                 tr
-                    th= i+1
+                    th(id=book[i].id)= i+1
                     td #{book[i].title}
                     td #{book[i].contents}
-            
-            //- span 제목은 #{book.title} 내용은 #{book.contents}
+        div(class='paging')
+            -for (var i=0; i<endPage; i++)
+                a(href="?pageNo="+(i+1)+'&pageSize='+pageSize)
+                    span= i+1 

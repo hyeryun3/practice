@@ -1,0 +1,54 @@
+body{
+    width: 500px;
+}
+table{
+    /* border: 1px solid black; */
+    width:100%;
+    color:red;
+    border-spacing: 0px;
+    margin: 2em auto;
+    border-collapse:collapse;
+    text-align: left;
+}
+
+th:nth-child(1){
+    width:1em;
+}
+
+td{
+    width:15em;
+}
+
+form{
+    text-align: center;
+}
+
+td, th{
+    border: 0.1px solid #00000030;
+    padding:0px;
+    margin:0px;
+    padding: 1em;
+}
+
+.paging{
+    text-align: center;
+    margin: 30px auto;
+}
+
+input[type=text]{
+    border-radius: 10px;
+    padding:10px;
+    border: 0.1px solid #00000030;
+}
+
+input[type=submit], input[type=button]{
+    border-radius: 10px;
+    padding:9px;
+    border: none;
+}
+
+span{
+    padding:5px;
+    list-style: none;
+
+}
