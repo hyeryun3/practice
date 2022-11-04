@@ -14,13 +14,12 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 app.get('/',function(req,res){
 
-    
-    var pageSize = req.query.pageSize
+    var pageCount = req.query.pageCount
     var pageNo = req.query.pageNo
-    if(pageSize == undefined || typeof pageSize == 'undefined' || pageSize == null){
-        pageSize=10
+    if(pageCount == undefined || typeof pageCount == 'undefined' || pageCount == null){
+        pageCount=10
     }else{
-        pageSize=parseInt(pageSize)
+        pageCount=parseInt(pageCount)
     }
 
     if(pageNo == undefined || typeof pageNo == 'undefined' || pageNo == null){
@@ -29,21 +28,44 @@ app.get('/',function(req,res){
         pageNo = parseInt(pageNo)
     }
 
-    var startNo = (pageNo-1)*pageSize == 0 ? 1 : (pageNo-1)*pageSize+1
+    var startNo = (pageNo-1)*pageCount == 0 ? 1 : (pageNo-1)*pageCount+1
+    var totalCount
+    conn.query('select count(*) as count from book',function(err,results){
+        if(err){
+            console.log(err)
+        }
+        totalCount = results[0].count
+    })
     
-    conn.query('select * from book',function(err,results,files){
+    conn.query('select * from book order by id DESC limit ' + pageCount + ' offset ' +  (startNo-1),function(err,results){
+        if(err){
+            console.log(err)
+        }
+        var endNo = (pageNo * pageCount)-1 < totalCount ? (pageNo * pageCount) : totalCount
+        var endPage = (totalCount % pageCount != 0 )? totalCount / pageCount + 1 : totalCount / pageCount
+        var counts = results.length
+
+        console.log(results)
+        console.log('totalCount', totalCount)
+        console.log('startNo', startNo)
+        console.log('endNo', endNo)
+        console.log('pageNo', pageNo)
+        console.log('endPage', endPage)
+        res.render('index', {book:results,endPage:Math.floor(endPage),pageNo:pageNo,counts:counts,pageCount:pageCount,totalCount:totalCount}) 
+    })
+})
+
+app.get('/delete/:idx',function(req,res){
+    console.log(req.params.idx)
+
+    conn.query('delete from book where id='+req.params.idx, function(err,results,files){
         if(err){
             console.log(err)
         }
         console.log(results)
-        
-        var totalCount = results.length
-        var endNo = (pageNo * pageSize)-1 < totalCount ? (pageNo * pageSize) : totalCount
-        var endPage = (totalCount % pageSize != 0 )? totalCount / pageSize + 1 : totalCount / pageSize
-            
-        res.render('index', {book:results,startNo:startNo,endNo:endNo,endPage:Math.floor(endPage),pageSize:pageSize}) 
-            
+        res.redirect('/')
     })
+
 })
 
 app.get('/one',function(req,res){

@@ -19,6 +19,11 @@ td{
     width:15em;
 }
 
+td:last-child{
+    width:1em
+}
+
+
 form{
     text-align: center;
 }

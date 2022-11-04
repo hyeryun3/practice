@@ -4,6 +4,8 @@ html
         meta(charset='utf8')
         title PRACTICE HOME 
         link(rel='stylesheet' href='/lib/style.css')
+        script(src='http://code.jquery.com/jquery-3.5.1.min.js')
+        script(type='text/javascript' src='/lib/script.js')
     body
         form(action="/formOk" method='post') 
             input(type="text" name='title')
@@ -12,12 +14,19 @@ html
         //- a(href='/one')
             button(type='button') 버튼1
         table
-            -for (var i=startNo-1; i<endNo; i++)
+            -for (var i=0; i<counts; i++)
                 tr
-                    th(id=book[i].id)= i+1
+                    th= totalCount-(pageCount*(pageNo-1))-i
                     td #{book[i].title}
                     td #{book[i].contents}
+                    td
+                        input(type='button' value='삭제' id=book[i].id name='delete')
         div(class='paging')
             -for (var i=0; i<endPage; i++)
-                a(href="?pageNo="+(i+1)+'&pageSize='+pageSize)
+                a(href="?pageNo="+(i+1)+'&pageCount='+pageCount)
                     span= i+1 
+
+        script.
+            $('input[name="delete"]').on('click',function(e){
+                location.href="/delete/"+e.target.id;
+            })
